@@ -1,4 +1,5 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
 
 class UserController
 {
@@ -18,28 +19,28 @@ class UserController
         $existingUser = $this->db->query($sql, [$email]);
         if ($existingUser[0]['COUNT(*)'] > 0) {
             // Email already exists, handle error
-            return false;
+            throw new Exception("Email already in use.");
         }
 
         // Hash the password for secure storage
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // Insert the new user into the database
-        $sql = "INSERT INTO users (email, nickname, password) VALUES (?, ?, ?)";
-        $params = [$email, $nickname, $hashedPassword];
+        $sql = "INSERT INTO users (email, nickname, password) VALUES (:email, :nickname, :password)";
+        $params = ['email' => $email, 'nickname' => $nickname, 'password' => $hashedPassword];
         return $this->db->execute($sql, $params);
     }
 
     public function login($email, $password)
     {
         // Find the user with the given email
-        $sql = "SELECT * FROM users WHERE email = ?";
-        $user = $this->db->query($sql, [$email]);
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $user = $this->db->query($sql, ['email' => $email]);
 
-        // Generate a token and store it in a cookie on successful login
         if (count($user) === 1 && password_verify($password, $user[0]['password'])) {
             $userId = $user[0]['id'];
             $token = $this->tokenManager->generateToken($userId);
+            // Assuming Cookie::set handles token storage in cookies
             Cookie::set('auth_token', $token, 3600); // 3600 seconds = 1 hour
             return true;
         }
@@ -64,7 +65,8 @@ class UserController
         }
     }
 
-    private function getUserFromToken($token) {
+    private function getUserFromToken($token)
+    {
         $userId = $this->tokenManager->getUserIdFromToken($token);
         if ($userId === null) {
             return null;

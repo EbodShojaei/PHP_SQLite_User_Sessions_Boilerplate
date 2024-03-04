@@ -49,8 +49,11 @@ class Database
     private function prepareStatement($sql, $params)
     {
         $stmt = $this->connection->prepare($sql);
+        if (!$stmt) {
+            throw new Exception("Unexpected error occurred.");
+        }
         foreach ($params as $key => $value) {
-            $stmt->bindValue(':' . $key, $value, SQLITE3_TEXT);
+            $stmt->bindValue(is_int($key) ? $key + 1 : ':' . $key, $value);
         }
         return $stmt;
     }
