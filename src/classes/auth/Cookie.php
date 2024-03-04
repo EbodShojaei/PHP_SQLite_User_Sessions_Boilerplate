@@ -1,22 +1,22 @@
 <?php
 
 class Cookie {
-    public static function set($id, $value, $expiry) {
-        if (setcookie($id, $value, time() + $expiry, '/')) {
+    public static function set($name, $value, $expiry) {
+        if (setcookie($name, $value, time() + $expiry, '/')) {
             return true;
         }
         return false;
     }
 
-    public static function delete($id) {
-        self::set($id, '', time() - 1);
+    public static function delete($name) {
+        self::set($name, '', time() - 1);
     }
 
-    public static function get($id) {
-        return $_COOKIE[$id];
+    public static function get($name) {
+        return $_COOKIE[$name];
     }
 
-    public static function exists($id) {
-        return isset($_COOKIE[$id]);
+    public static function exists($name) {
+        return isset($_COOKIE[$name]);
     }
 }

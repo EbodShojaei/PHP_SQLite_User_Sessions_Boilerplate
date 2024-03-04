@@ -16,8 +16,7 @@ class AuthMiddleware {
                 return $token;
             }
         }
-        // header('Location: /login');
-        // exit();
+        return null;
     }
 
     public function checkAuthorized($role) {

@@ -19,7 +19,9 @@ switch ($request) {
         require 'routes/register/index.php';
         break;
     case '/':
-    default:
         require 'routes/home/index.php';
+        break;
+    default:
+        require 'routes/error/404/index.php';
         break;
 }
