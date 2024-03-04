@@ -15,8 +15,14 @@ switch ($request) {
     case '/login':
         require 'routes/login/index.php';
         break;
+    case '/login/submit':
+        require 'routes/login/submit/index.php';
+        break;
     case '/register':
         require 'routes/register/index.php';
+        break;
+    case '/register/submit':
+        require 'routes/register/submit/index.php';
         break;
     case '/':
         require 'routes/home/index.php';

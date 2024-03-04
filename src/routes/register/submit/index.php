@@ -6,9 +6,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/validators.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'] ? sanitizeEmail($_POST['email']) : '';
-    $nickname = $_POST['nickname'] ? sanitizeString($_POST['nickname']) : '';
-    $password = $_POST['password'] ? sanitizeString($_POST['password']) : '';
+    $email = sanitizeEmail($_POST['email'] ?? '');
+    $nickname = sanitizeString($_POST['nickname'] ?? '');
+    $password = sanitizeString($_POST['password'] ?? '');
+
     validateEmail($email);
     validateNickname($nickname);
     validatePassword($password);
@@ -20,8 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: /");
         exit();
     } else {
-        Alerts::setAlert("Registration failed.", "danger");
-        header("Location: /register");
-        exit();
+        Alerts::redirect("Registration failed.", "danger", "/register");
     }
 }

@@ -20,6 +20,7 @@ class Alerts
 
     public static function redirect($message, $type, $location)
     {
+        if ($location[0] !== '/') $location = "/$location";
         self::setAlert($message, $type);
         header("Location: $location");
         exit();
