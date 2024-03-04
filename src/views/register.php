@@ -6,7 +6,7 @@
 <main>
     <div class="w-50 mx-auto my-5">
         <h1>Register</h1>
-        <form method="post" action="/register">
+        <form method="post" action="/register/submit">
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>

@@ -1,13 +1,9 @@
 <?php
 
-function sanitizeString($string, $maxLength = null)
+function sanitizeString($string)
 {
     $string = trim($string); // Remove whitespace
-    $string = htmlspecialchars($string, ENT_QUOTES | ENT_HTML5, 'UTF-8'); // Sanitize string
-    if ($maxLength !== null) {
-        $string = substr($string, 0, $maxLength); // Limit length
-    }
-    return $string;
+    return htmlspecialchars($string, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 }
 
 function sanitizeEmail($email)
