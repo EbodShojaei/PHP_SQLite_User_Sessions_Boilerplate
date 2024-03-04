@@ -2,10 +2,11 @@
 class Database
 {
     private static $instance = null;
+    private $connection;
 
     private function __construct()
     {
-        // Prevent direct instantiation
+        $this->openConnection();
     }
 
     public static function getInstance()
@@ -18,37 +19,47 @@ class Database
 
     private function openConnection()
     {
-        if (self::$instance === null) {
-            self::$instance = new PDO("sqlite:" . $_SERVER['DOCUMENT_ROOT'] . "/bank.sqlite");
-            self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        if ($this->connection === null) {
+            $this->connection = new SQLite3($_SERVER['DOCUMENT_ROOT'] . '/database.db');
+            if (!$this->connection) {
+                throw new Exception("Failed to connect to the database.");
+            }
         }
-        return self::$instance;
-    }
-
-    private function closeConnection()
-    {
-        self::$instance = null;
     }
 
     public function query($sql, $params = [])
     {
-        $conn = $this->openConnection();
-        $stmt = $conn->prepare($sql);
-        $stmt->execute($params);
-        $result = $stmt->fetchAll();
-        $this->closeConnection();
-        return $result;
+        $stmt = $this->prepareStatement($sql, $params);
+        $result = $stmt->execute();
+        $data = [];
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+            $data[] = $row;
+        }
+        return $data;
     }
 
     public function execute($sql, $params = [])
     {
-        $conn = $this->openConnection();
-        $stmt = $conn->prepare($sql);
-        $stmt->execute($params);
-        $result = $stmt->rowCount();
-        $this->closeConnection();
-        return $result;
+        $stmt = $this->prepareStatement($sql, $params);
+        $result = $stmt->execute();
+        return $this->connection->changes();
+    }
+
+    private function prepareStatement($sql, $params)
+    {
+        $stmt = $this->connection->prepare($sql);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue(':' . $key, $value, SQLITE3_TEXT);
+        }
+        return $stmt;
+    }
+
+    private function closeConnection()
+    {
+        if ($this->connection) {
+            $this->connection->close();
+            $this->connection = null;
+        }
     }
 
     private function __clone()
@@ -59,5 +70,12 @@ class Database
     public function __wakeup()
     {
         // Prevent unserializing of the instance
+    }
+
+    public function __destruct()
+    {
+        if ($this->connection) {
+            $this->closeConnection();
+        }
     }
 }
