@@ -43,6 +43,7 @@ class UserController
             $token = $this->tokenManager->generateToken($userId);
             // Assuming Cookie::set handles token storage in cookies
             Cookie::set('auth_token', $token, 3600); // 3600 seconds = 1 hour
+            $_SESSION['user_role'] = $user[0]['role'];
             return true;
         }
         return false;

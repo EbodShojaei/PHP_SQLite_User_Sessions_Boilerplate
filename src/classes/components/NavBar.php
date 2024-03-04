@@ -51,7 +51,7 @@ class NavBar
     private static function renderAuthorizedUserItems()
     {
         echo '<li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>';
-        echo '<li class="nav-item"><a class="nav-link" href="/admin">Admin Console</a></li>';
+        echo '<li class="nav-item"><a class="nav-link" href="/admin">Admin</a></li>';
         echo '<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>';
     }
 
