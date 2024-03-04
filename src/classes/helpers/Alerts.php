@@ -18,6 +18,13 @@ class Alerts
         return null;
     }
 
+    public static function redirect($message, $type, $location)
+    {
+        self::setAlert($message, $type);
+        header("Location: $location");
+        exit();
+    }
+
     public static function display()
     {
         $alert = self::getAlert();

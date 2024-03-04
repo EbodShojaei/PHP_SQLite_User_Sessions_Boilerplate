@@ -6,7 +6,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/auth/TokenManager.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/auth/Cookie.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/middleware/AuthMiddleware.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Sanitizer.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/sanitizers.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sql/constants/users.php';
 
 $db = Database::getInstance();
 $tokenManager = new TokenManager($db);
@@ -18,16 +19,14 @@ $authMiddleware->checkUnauthenticated();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
-    InputSanitizer::cleanEmail($email);
-    InputSanitizer::cleanString($password);
+    sanitizeString(string: sanitizeEmail($email), maxLength: EMAIL_MAX_LENGTH);
+    sanitizeString(string: $password, maxLength: PASSWORD_MAX_LENGTH);
 
     if ($userController->login($email, $password)) {
         header("Location: /");
         exit();
     } else {
-        Alerts::setAlert("Invalid login credentials.", "danger");
-        header("Location: /login");
-        exit();
+        Alerts::redirect("Invalid login credentials.", "danger", "/login");
     }
 }
 

@@ -1,0 +1,5 @@
+<?php
+
+const EMAIL_MAX_LENGTH = 50;
+const PASSWORD_MAX_LENGTH = 15;
+const NICKNAME_MAX_LENGTH = 20;
