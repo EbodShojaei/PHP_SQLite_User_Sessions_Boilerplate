@@ -3,8 +3,8 @@
 
 <main>
     <div class="hero-section">
-        <div class="container">
-            <h1>Welcome to Our Site!</h1>
+        <div class="container mt-5">
+            <h1 class="mb-5">Welcome to Our Site!</h1>
             <p>Join our community or log in to access all the features.</p>
             <a href="/login" class="btn btn-primary">Login</a>
             <a href="/register" class="btn btn-secondary">Register</a>

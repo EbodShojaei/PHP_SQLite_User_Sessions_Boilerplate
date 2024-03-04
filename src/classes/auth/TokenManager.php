@@ -56,4 +56,12 @@ class TokenManager
         $result = $this->db->query($sql, [$hashedToken]);
         return $result[0]['id'];
     }
+
+    public function getUserRoleFromToken($token)
+    {
+        $hashedToken = $this->hashToken($token);
+        $sql = "SELECT role FROM users WHERE token = ?";
+        $result = $this->db->query($sql, [$hashedToken]);
+        return $result[0]['role'];
+    }
 }

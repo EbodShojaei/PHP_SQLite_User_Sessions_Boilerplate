@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/config/Database.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/controllers/UserController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/auth/TokenManager.php';
