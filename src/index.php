@@ -12,13 +12,13 @@ $request = $_SERVER['REQUEST_URI'];
 
 switch ($request) {
     case '/login':
-        require 'views/login.php';
+        require 'routes/login/index.php';
         break;
     case '/register':
-        require 'views/register.php';
+        require 'routes/register/index.php';
         break;
     case '/':
     default:
-        require 'views/home.php';
+        require 'routes/home/index.php';
         break;
 }

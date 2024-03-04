@@ -3,13 +3,13 @@
 class User {
     private $id;
     private $email;
+    private $nickname;
     private $password;
-    private $token;
 
-    public function __construct($id, $email, $password) {
+    public function __construct($id, $email, $nickname) {
         $this->id = $id;
         $this->email = $email;
-        $this->password = $password;
+        $this->nickname = $nickname;
     }
 
     public function getId() {
@@ -20,11 +20,7 @@ class User {
         return $this->email;
     }
 
-    public function getPassword() {
-        return $this->password;
-    }
-
-    public function getToken() {
-        return $this->token;
+    public function getNickname() {
+        return $this->nickname;
     }
 }
