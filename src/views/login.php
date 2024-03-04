@@ -1,5 +1,6 @@
 <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/views/common/header.php'; ?>
 <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/views/common/nav.php'; ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php'; ?>
 <?php Alerts::display(); ?>
 
 <main>

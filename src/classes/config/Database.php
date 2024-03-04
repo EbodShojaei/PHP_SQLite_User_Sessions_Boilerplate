@@ -20,7 +20,8 @@ class Database
     private function openConnection()
     {
         if ($this->connection === null) {
-            $this->connection = new SQLite3($_SERVER['DOCUMENT_ROOT'] . '/database.db');
+            $this->connection = new SQLite3($_SERVER['DOCUMENT_ROOT'] . '/sql/bank.db');
+            $this->execute("PRAGMA foreign_keys = ON;"); // Enable foreign key constraints
             if (!$this->connection) {
                 throw new Exception("Failed to connect to the database.");
             }
@@ -41,7 +42,7 @@ class Database
     public function execute($sql, $params = [])
     {
         $stmt = $this->prepareStatement($sql, $params);
-        $result = $stmt->execute();
+        $stmt->execute();
         return $this->connection->changes();
     }
 

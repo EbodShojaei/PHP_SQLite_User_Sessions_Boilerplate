@@ -24,7 +24,11 @@ class Alerts
         if ($alert !== null) {
             $message = $alert['message'];
             $type = $alert['type'];
-            echo "<div class='alert alert-$type'>$message</div>";
+            echo
+            "<div id='alert-container' class='alert alert-$type alert-dismissible fade show position-fixed w-75 mx-auto' style='top: 10px; left: 0; right: 0; z-index: 1111;' role='alert'>
+                $message
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
         }
     }
 }
