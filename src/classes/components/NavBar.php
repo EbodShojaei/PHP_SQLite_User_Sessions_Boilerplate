@@ -5,7 +5,7 @@ class NavBar
     public static function render()
     {
         echo '<header>';
-        echo '    <nav class="navbar navbar-expand-lg navbar-light bg-light">';
+        echo '    <nav class="navbar navbar-expand-lg navbar-light bg-light px-5 py-2">';
         self::renderBrand();
         self::renderToggleButton();
         self::renderMenuItems();
