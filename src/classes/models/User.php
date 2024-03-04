@@ -5,11 +5,13 @@ class User {
     private $email;
     private $nickname;
     private $password;
+    private $status;
 
-    public function __construct($id, $email, $nickname) {
+    public function __construct($id, $email, $nickname, $status='user') {
         $this->id = $id;
         $this->email = $email;
         $this->nickname = $nickname;
+        $this->status = $status;
     }
 
     public function getId() {
@@ -22,5 +24,9 @@ class User {
 
     public function getNickname() {
         return $this->nickname;
+    }
+
+    public function getStatus() {
+        return $this->status;
     }
 }

@@ -41,4 +41,12 @@ class TokenManager
         $result = $this->db->query($sql, ['token' => $token]);
         return $result[0]['user_id'] ?? null;
     }
+
+    public function getUserRoleFromToken($token)
+    {
+        $userId = $this->getUserIdFromToken($token);
+        $sql = "SELECT role FROM users WHERE id = :userId";
+        $result = $this->db->query($sql, ['userId' => $userId]);
+        return $result[0]['role'] ?? null;
+    }
 }

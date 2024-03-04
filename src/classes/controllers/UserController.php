@@ -1,5 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/models/User.php';
 
 class UserController
 {
@@ -47,8 +48,11 @@ class UserController
         return false;
     }
 
-    public function logout($userId)
+    public function logout($token, $userId=null)
     {
+        if ($userId === null) {
+            $userId = $this->tokenManager->getUserIdFromToken($token);
+        }
         $this->tokenManager->clearToken($userId);
         Cookie::delete('auth_token');
     }

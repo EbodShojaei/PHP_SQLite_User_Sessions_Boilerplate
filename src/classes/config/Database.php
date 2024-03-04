@@ -50,7 +50,7 @@ class Database
     {
         $stmt = $this->connection->prepare($sql);
         if (!$stmt) {
-            throw new Exception("Unexpected error occurred.");
+            throw new Exception("Failed to prepare statement.");
         }
         foreach ($params as $key => $value) {
             $stmt->bindValue(is_int($key) ? $key + 1 : ':' . $key, $value);

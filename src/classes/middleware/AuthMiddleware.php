@@ -1,17 +1,19 @@
 <?php
 
-class AuthMiddleware {
+class AuthMiddleware
+{
     private $tokenManager;
 
-    public function __construct(TokenManager $tokenManager) {
+    public function __construct(TokenManager $tokenManager)
+    {
         $this->tokenManager = $tokenManager;
     }
 
-    public function checkAuthenticated() {
+    public function checkAuthenticated()
+    {
         if (Cookie::exists('auth_token')) {
             $token = Cookie::get('auth_token');
-            $userId = $this->tokenManager->getUserIdFromToken($token);
-            $isLoggedIn = $this->tokenManager->validateToken($token, $userId);
+            $isLoggedIn = $this->tokenManager->validateToken($token);
             if ($isLoggedIn) {
                 return $token;
             }
@@ -19,9 +21,9 @@ class AuthMiddleware {
         return null;
     }
 
-    public function checkAuthorized($role) {
+    public function checkAuthorized($role = 'admin')
+    {
         $token = $this->checkAuthenticated();
-        $userId = $this->tokenManager->getUserIdFromToken($token);
         $userRole = $this->tokenManager->getUserRoleFromToken($token);
         if ($userRole !== $role) {
             header('Location: /');
@@ -29,11 +31,11 @@ class AuthMiddleware {
         }
     }
 
-    public function checkUnauthenticated() {
+    public function checkUnauthenticated()
+    {
         if (Cookie::exists('auth_token')) {
             $token = Cookie::get('auth_token');
-            $userId = $this->tokenManager->getUserIdFromToken($token);
-            $isLoggedIn = $this->tokenManager->validateToken($token, $userId);
+            $isLoggedIn = $this->tokenManager->validateToken($token);
             if ($isLoggedIn) {
                 header('Location: /');
                 exit();
