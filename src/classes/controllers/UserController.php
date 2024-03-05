@@ -18,10 +18,7 @@ class UserController
         // Check if the email already exists in the database
         $sql = "SELECT COUNT(*) FROM users WHERE email = ?";
         $existingUser = $this->db->query($sql, [$email]);
-        if ($existingUser[0]['COUNT(*)'] > 0) {
-            // Email already exists, handle error
-            throw new Exception("Email already in use.");
-        }
+        if ($existingUser[0]['COUNT(*)'] > 0) throw new Exception("Email already in use.");
 
         // Hash the password for secure storage
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -37,7 +34,13 @@ class UserController
         // Find the user with the given email
         $sql = "SELECT * FROM users WHERE email = :email";
         $user = $this->db->query($sql, ['email' => $email]);
+        $userStatus = $user[0]['status'];
 
+        // Check if the user exists and is active
+        if (count($user) === 0) throw new Exception("User not found.");
+        if ($userStatus !== 'active') throw new Exception("User is not active.");
+
+        // Verify the password
         if (count($user) === 1 && password_verify($password, $user[0]['password'])) {
             $userId = $user[0]['id'];
             $token = $this->tokenManager->generateToken($userId);
