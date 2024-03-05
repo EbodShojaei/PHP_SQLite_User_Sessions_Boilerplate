@@ -1,5 +1,14 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/config/Database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/auth/TokenManager.php';
+
+$token = Cookie::exists('auth_token') ? Cookie::get('auth_token') : null;
+$db = Database::getInstance();
+$tokenManager = new TokenManager($db);
+$currentUserId = $tokenManager->getUserIdFromToken($token);
+$currentUser = $db->query("SELECT * FROM users WHERE id = $currentUserId")[0];
+$isAdmin = $currentUser['role'] === 'admin';
+if (!$isAdmin) Alerts::redirect("You do not have permission to access this page.", "danger", "/");
 
 $users = $db->query("SELECT * FROM users");
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;

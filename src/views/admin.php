@@ -22,14 +22,19 @@
                         <td><?= $user['role'] ?></td>
                         <td><?= $user['status'] ?></td>
                         <td>
-                            <form method="POST" action="/admin/activate">
-                                <input type="hidden" name="userId" value="<?= $user['id'] ?>">
-                                <button class="btn btn-success m-1 w-50" type="submit">Activate</button>
-                            </form>
-                            <form method="POST" action="/admin/deactivate">
-                                <input type="hidden" name="userId" value="<?= $user['id'] ?>">
-                                <button class="btn btn-danger m-1 w-50" type="submit">Deactivate</button>
-                            </form>
+                        <?php if ($user['id'] != $currentUserId): ?>
+                                <form method="POST" action="/admin/activate">
+                                    <input type="hidden" name="userId" value="<?= htmlspecialchars($user['id']) ?>">
+                                    <button class="btn btn-success m-1 w-50" type="submit">Activate</button>
+                                </form>
+                                <form method="POST" action="/admin/deactivate">
+                                    <input type="hidden" name="userId" value="<?= htmlspecialchars($user['id']) ?>">
+                                    <button class="btn btn-danger m-1 w-50" type="submit">Deactivate</button>
+                                </form>
+                            <?php else: ?>
+                                <button class="btn btn-success m-1 w-50" type="button" disabled>Activate</button>
+                                <button class="btn btn-danger m-1 w-50" type="button" disabled>Deactivate</button>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
