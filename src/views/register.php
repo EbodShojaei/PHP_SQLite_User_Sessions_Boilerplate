@@ -3,7 +3,7 @@
 <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php'; ?>
 <?php Alerts::display(); ?>
 
-<main>
+<main class="container vh-100">
     <div class="w-50 mx-auto my-5">
         <h1>Register</h1>
         <form method="post" action="/register/submit">

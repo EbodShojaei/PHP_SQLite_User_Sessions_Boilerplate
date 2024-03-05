@@ -41,7 +41,7 @@
             </tbody>
         </table>
         <nav aria-label="users-list">
-            <ul class="pagination justify-content-center py-5 my-5 fixed-bottom">
+            <ul class="pagination justify-content-center py-5 my-5">
                 <?php if ($currentPage > 1): ?>
                     <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
                     <li class="page-item"><a class="page-link" href="?page=<?= $currentPage - 1 ?>">Previous</a></li>
