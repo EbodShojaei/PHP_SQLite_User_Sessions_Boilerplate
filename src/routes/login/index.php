@@ -10,7 +10,7 @@ $db = Database::getInstance();
 $tokenManager = new TokenManager($db);
 $authMiddleware = new AuthMiddleware($tokenManager);
 
-$authMiddleware->checkUnauthenticated();
+$authMiddleware->checkStatus();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     Alerts::display();

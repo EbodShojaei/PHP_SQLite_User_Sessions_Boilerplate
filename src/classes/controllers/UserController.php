@@ -79,7 +79,7 @@ class UserController
 
         $sql = "SELECT * FROM users WHERE id = ?";
         $data = $this->db->query($sql, [$userId]);
-        $user = new User($data[0]['id'], $data[0]['email'], $data[0]['nickname']);
+        $user = new User($data[0]['id'], $data[0]['email'], $data[0]['nickname'], $data[0]['role'], $data[0]['status']);
         return $user;
     }
 }

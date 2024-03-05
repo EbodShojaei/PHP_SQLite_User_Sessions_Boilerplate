@@ -21,25 +21,23 @@ class AuthMiddleware
         return null;
     }
 
-    public function checkAuthorized($role = 'admin')
+    public function checkAuthorized()
     {
         $token = $this->checkAuthenticated();
         $userRole = $this->tokenManager->getUserRoleFromToken($token);
-        if ($userRole !== $role) {
-            header('Location: /');
+        if ($userRole !== 'admin') {
+            header('Location: /error/404');
             exit();
         }
     }
 
-    public function checkUnauthenticated()
+    public function checkStatus()
     {
-        if (Cookie::exists('auth_token')) {
-            $token = Cookie::get('auth_token');
-            $isLoggedIn = $this->tokenManager->validateToken($token);
-            if ($isLoggedIn) {
-                header('Location: /');
-                exit();
-            }
+        $token = $this->checkAuthenticated();
+        $userStatus = $this->tokenManager->getUserStatusFromToken($token);
+        if ($userStatus === 'active') {
+            header('Location: /');
+            exit();
         }
     }
 }

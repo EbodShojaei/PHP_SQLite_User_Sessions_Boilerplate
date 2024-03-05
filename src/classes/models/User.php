@@ -4,14 +4,15 @@ class User {
     private $id;
     private $email;
     private $nickname;
-    private $password;
     private $role;
+    private $status;
 
-    public function __construct($id, $email, $nickname) {
+    public function __construct($id, $email, $nickname, $role='user', $status='inactive') {
         $this->id = $id;
         $this->email = $email;
         $this->nickname = $nickname;
-        $this->role = 'user'; // Default role is 'user
+        $this->role = $role;
+        $this->status = $status;
     }
 
     public function getId() {
@@ -28,5 +29,9 @@ class User {
 
     public function getRole() {
         return $this->role;
+    }
+
+    public function getStatus() {
+        return $this->status;
     }
 }

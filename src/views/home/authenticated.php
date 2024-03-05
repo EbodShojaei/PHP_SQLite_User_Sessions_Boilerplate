@@ -11,9 +11,11 @@ $nickname = $user->getNickname();
 
 <main>
     <div class="container">
+        <div class="mt-5">
         <h1>Welcome Back, <?= htmlspecialchars($nickname); ?>!</h1>
         <p>This is your dashboard where you can access all your personal features.</p>
         <!-- Additional content for authenticated users -->
+        </div>
     </div>
 </main>
 

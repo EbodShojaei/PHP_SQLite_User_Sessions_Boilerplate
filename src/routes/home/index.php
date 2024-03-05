@@ -11,19 +11,12 @@ $authMiddleware = new AuthMiddleware($tokenManager);
 $userController = new UserController($db);
 
 $token = Cookie::exists('auth_token') ? Cookie::get('auth_token') : null;
+$isAuthenticated = $authMiddleware->checkAuthenticated($token);
+$isActivated = $isAuthenticated ? $tokenManager->getUserStatusFromToken($token) === 'active' : false;
+$validToken = $isAuthenticated ? $tokenManager->validateToken($token) : false;
 
-// Check if token exists and is valid
-if ($token) {
-    $userId = $tokenManager->getUserIdFromToken($token);
-    if ($userId && $tokenManager->validateToken($token, $userId)) {
-        // Token is valid, fetch user data and display authenticated view
-        $user = $userController->getUser($userId);
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/views/home/authenticated.php';
-    } else {
-        // Token is invalid, display unauthenticated view
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/views/home/unauthenticated.php';
-    }
+if ($token && $isAuthenticated && $isActivated && $validToken) {
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/views/home/authenticated.php';
 } else {
-    // No token, display unauthenticated view
     require_once $_SERVER['DOCUMENT_ROOT'] . '/views/home/unauthenticated.php';
 }

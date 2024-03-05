@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS users (
     nickname TEXT NOT NULL CHECK(LENGTH(nickname) >= " . NICKNAME_MIN_LENGTH . " AND LENGTH(nickname) <= " . NICKNAME_MAX_LENGTH . "),
     password TEXT NOT NULL CHECK(LENGTH(password) >= " . PASSWORD_MIN_LENGTH . " AND LENGTH(password) <= " . PASSWORD_MAX_LENGTH . "),
     role TEXT CHECK(role IN ('user', 'admin')) NOT NULL DEFAULT 'user',
+    status TEXT CHECK(status IN ('active', 'inactive')) NOT NULL DEFAULT 'inactive',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 )";
