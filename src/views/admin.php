@@ -22,12 +22,12 @@
                         <td><?= $user['role'] ?></td>
                         <td><?= $user['status'] ?></td>
                         <td>
-                            <form method="POST" action="">
-                                <input type="hidden" name="/admin/activate" value="<?= $user['id'] ?>">
+                            <form method="POST" action="/admin/activate">
+                                <input type="hidden" name="userId" value="<?= $user['id'] ?>">
                                 <button class="btn btn-success m-1 w-50" type="submit">Activate</button>
                             </form>
-                            <form method="POST" action="">
-                                <input type="hidden" name="/admin/deactivate" value="<?= $user['id'] ?>">
+                            <form method="POST" action="/admin/deactivate">
+                                <input type="hidden" name="userId" value="<?= $user['id'] ?>">
                                 <button class="btn btn-danger m-1 w-50" type="submit">Deactivate</button>
                             </form>
                         </td>
