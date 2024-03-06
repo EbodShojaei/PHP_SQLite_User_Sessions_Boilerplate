@@ -16,40 +16,40 @@ $request = $_SERVER['REQUEST_URI'];
 switch ($request) {
     case '/login':
         $authMiddleware->checkAuthenticated();
-        require 'routes/login/index.php';
+        require 'pages/login/index.php';
         break;
     case '/login/submit':
         $authMiddleware->checkAuthenticated();
-        require 'routes/login/submit/index.php';
+        require 'pages/login/submit/index.php';
         break;
     case '/register':
         $authMiddleware->checkAuthenticated();
-        require 'routes/register/index.php';
+        require 'pages/register/index.php';
         break;
     case '/register/submit':
         $authMiddleware->checkAuthenticated();
-        require 'routes/register/submit/index.php';
+        require 'pages/register/submit/index.php';
         break;
     case '/logout':
-        require 'routes/logout/index.php';
+        require 'pages/logout/index.php';
         break;
     case '/':
         $isAuthenticated = $authMiddleware->isAuthenticated();
-        require 'routes/home/index.php';
+        require 'pages/home/index.php';
         break;
     case '/admin':
         $authMiddleware->checkAuthorized();
-        require 'routes/admin/index.php';
+        require 'pages/admin/index.php';
         break;
     case '/admin/activate':
         $authMiddleware->checkAuthorized();
-        require 'routes/admin/activate/index.php';
+        require 'pages/admin/activate/index.php';
         break;
     case '/admin/deactivate':
         $authMiddleware->checkAuthorized();
-        require 'routes/admin/deactivate/index.php';
+        require 'pages/admin/deactivate/index.php';
         break;
     default:
-        require 'routes/error/404/index.php';
+        require 'pages/error/404/index.php';
         break;
 }

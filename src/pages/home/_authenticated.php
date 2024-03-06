@@ -1,6 +1,6 @@
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/controllers/UserController.php'; ?>
-
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/controllers/UserController.php';
+
 $db = Database::getInstance();
 $userController = new UserController($db);
 $user = $userController->getUser($_COOKIE['auth_token']);
