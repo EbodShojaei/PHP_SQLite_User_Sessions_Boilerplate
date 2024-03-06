@@ -49,6 +49,10 @@ switch ($request) {
         $authMiddleware->checkAuthorized();
         require 'pages/admin/deactivate/index.php';
         break;
+    case '/transactions':
+        $authMiddleware->checkUnauthenticated();
+        require 'pages/transactions/index.php';
+        break;
     default:
         require 'pages/error/404/index.php';
         break;

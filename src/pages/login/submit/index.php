@@ -1,9 +1,9 @@
 <?php
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/controllers/UserController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Sanitizer.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Validator.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {

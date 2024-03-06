@@ -52,4 +52,14 @@ class AuthMiddleware
             exit();
         }
     }
+
+    public function checkUnauthenticated()
+    {
+        $token = $this->hasToken();
+        $userStatus = $this->tokenManager->getUserStatusFromToken($token);
+        if ($token && $userStatus !== 'active') {
+            header('Location: /');
+            exit();
+        }
+    }
 }

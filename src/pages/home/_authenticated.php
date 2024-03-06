@@ -10,9 +10,14 @@ $nickname = $user->getNickname();
 <main class="container vh-100">
     <div>
         <div class="mt-5">
-        <h1>Welcome Back, <?= htmlspecialchars($nickname); ?>!</h1>
-        <p>This is your dashboard where you can access all your personal features.</p>
-        <!-- Additional content for authenticated users -->
+            <h1>Welcome Back,
+                <?= htmlspecialchars($nickname); ?>!
+            </h1>
+            <p class="my-5">
+                <button class="btn btn-primary" onclick="location.href='/transactions'">Transactions</button>
+                <button class="btn btn-primary" onclick="location.href='/buckets'">Buckets</button>
+                <button class="btn btn-primary" onclick="location.href='/dashboard'">Dashboard</button>
+            </p>
         </div>
     </div>
 </main>

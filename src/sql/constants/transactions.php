@@ -1,0 +1,5 @@
+<?php
+
+const TRANS_NAME_MIN_LEN = 2;
+const TRANS_NAME_MAX_LEN = 25;
+const TRANS_DOLLAR_FORMAT = "DECIMAL(10,2)";
