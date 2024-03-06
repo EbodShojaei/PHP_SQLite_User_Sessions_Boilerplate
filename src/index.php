@@ -4,7 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/config/Database.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/controllers/UserController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/auth/TokenManager.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/auth/Cookie.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/middleware/AuthMiddleware.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/auth/AuthMiddleware.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/sql/init.php';
 
 $db = Database::getInstance();
@@ -58,13 +58,9 @@ switch ($request) {
         $authMiddleware->checkUnauthenticated();
         require 'pages/transactions/update/submit/index.php';
         break;
-    case '/transactions/delete':
+    case '/transactions/remove':
         $authMiddleware->checkUnauthenticated();
-        require 'pages/transactions/delete/index.php';
-        break;
-    case '/transactions/delete/submit':
-        $authMiddleware->checkUnauthenticated();
-        require 'pages/transactions/delete/submit/index.php';
+        require 'pages/transactions/remove/index.php';
         break;
     case '/admin':
         $authMiddleware->checkAuthorized();

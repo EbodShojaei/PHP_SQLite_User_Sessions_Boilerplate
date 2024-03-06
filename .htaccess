@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^transactions/remove/([0-9]+)$ /transaction/remove/index.php?id=$1 [L,QSA]

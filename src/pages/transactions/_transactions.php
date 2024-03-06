@@ -10,7 +10,7 @@
                 <th>Date</th>
                 <th>Name</th>
                 <th>Expense</th>
-                <th>Income</th>
+                <th>Deposit</th>
                 <th>Overall Balance</th>
                 <th>Category</th>
                 <th>Actions</th>
@@ -20,10 +20,10 @@
             <?php foreach ($transactions as $transaction): ?>
                 <tr>
                     <td>
-                        <?= htmlspecialchars($transaction['transaction_id']) ?>
+                        <?= htmlspecialchars($transaction['id']) ?>
                     </td>
                     <td>
-                        <?= htmlspecialchars($transaction['transaction_date']) ?>
+                        <?= htmlspecialchars($transaction['date']) ?>
                     </td>
                     <td>
                         <?= htmlspecialchars($transaction['name']) ?>
@@ -32,22 +32,42 @@
                         <?= htmlspecialchars($transaction['expense']) ?>
                     </td>
                     <td>
-                        <?= htmlspecialchars($transaction['income']) ?>
+                        <?= htmlspecialchars($transaction['deposit']) ?>
                     </td>
                     <td>
-                        <?= htmlspecialchars($transaction['overall_balance']) ?>
+                        <?= htmlspecialchars($transaction['balance']) ?>
                     </td>
                     <td>
                         <?= empty($transaction['category']) ? 'Other' : htmlspecialchars($transaction['category']) ?>
                     </td>
                     <td>
                         <button class="btn btn-info"
-                            onclick="location.href='/transactions/update/<?= $transaction['transaction_id'] ?>'">Update</button>
+                            onclick="location.href='/transactions/update/<?= $transaction['id'] ?>'">Update</button>
                         <button class="btn btn-danger"
-                            onclick="location.href='/transactions/delete/<?= $transaction['transaction_id'] ?>'">Delete</button>
+                            onclick="confirmDelete('<?= $transaction['id'] ?>')">Delete</button>
+                        <form id="deleteForm_<?= $transaction['id'] ?>" action="/transactions/remove"
+                            method="post" style="display:none;">
+                            <input type="hidden" name="id" value="<?= $transaction['id'] ?>">
+                        </form>
                     </td>
                 </tr>
             <?php endforeach; ?>
+            <div id="deleteModal" style="display:none;">
+                <form action="/transactions/remove" method="post">
+                    <input type="hidden" name="id" id="transactionToDelete" value="">
+                    <p>Are you sure you want to delete this transaction?</p>
+                    <input type="submit" value="Confirm Delete">
+                    <!-- Include a CSRF token here -->
+                </form>
+            </div>
         </tbody>
     </table>
 </div>
+<script>
+    function confirmDelete(transactionId) {
+        if (confirm("Are you sure you want to delete this transaction?")) {
+            // Submit the form corresponding to the transaction
+            document.getElementById('deleteForm_' + transactionId).submit();
+        }
+    }
+</script>

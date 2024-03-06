@@ -1,34 +1,37 @@
 <?php
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/auth/TokenManager.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/controllers/TransactionController.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Sanitizer.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Validator.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sql/constants/transactions.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $date = Sanitizer::sanitizeString($_POST['date'] ??'');
-        $name = Sanitizer::sanitizeString($_POST['name'] ??'');
+        // Sanitize then validate inputs
+        $date = Sanitizer::sanitizeString($_POST['date'] ?? '');
+        $name = Sanitizer::sanitizeString($_POST['name'] ?? '');
         $expense = floatval(Sanitizer::sanitizeString($_POST['expense'] ?? ''));
-        $deposit = floatval(Sanitizer::sanitizeString($_POST['deposit'] ??''));
-        
+        $deposit = floatval(Sanitizer::sanitizeString($_POST['deposit'] ?? ''));
+        Validator::validateDate($date, "/transactions/create");
+        Validator::validateInput($name, TRANS_NAME_MIN_LEN, TRANS_NAME_MAX_LEN, "/transactions/create");
+        Validator::validateFloat($expense, "/transactions/create");
+        Validator::validateInput($deposit, "/transactions/create");
 
-
-
-        Validator::validateEmail($email);
-        Validator::validateNickname($nickname);
-        Validator::validatePassword($password);
-
+        // Create transaction
         $db = Database::getInstance();
-        $userController = new UserController($db);
+        $transactionController = new TransactionController($db);
+        $tokenManager = new TokenManager($db);
+        $currentUserId = $tokenManager->getUserIdFromToken();
 
-        if ($userController->register($email, $nickname, $password)) {
-            Alerts::redirect("Registration successful. You can now log in.", "success", "/login");
+        if ($transactionController->create(new Transaction(userId: $currentUserId, date: $date, name: $name, expense: $expense, deposit: $deposit))) {
+            Alerts::redirect("Transaction created successfully.", "success", "/transactions");
             exit();
         } else {
-            Alerts::redirect("Registration failed.", "danger", "/register");
+            Alerts::redirect("Failed to create transaction.", "danger", "/transactions/create");
         }
     } catch (Exception $e) {
-        Alerts::redirect($e->getMessage(), "danger", "/register");
+        Alerts::redirect($e->getMessage(), "danger", "/transactions/create");
     }
 }

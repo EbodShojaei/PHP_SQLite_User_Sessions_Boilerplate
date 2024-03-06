@@ -1,10 +1,10 @@
 <div class="container my-5">
-    <h1>Create Transaction</h1>
+    <h1 class = "my-5">Create Transaction</h1>
     <button class="btn btn-secondary mb-3" onclick="location.href='/transactions'">Back</button>
     <?php if (!empty($error)): ?>
         <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
-    <form action="create.php" method="post">
+    <form action="/transactions/create/submit" method="post">
         <div class="form-group">
             <label for="date">Date:</label>
             <input type="date" class="form-control" id="date" name="date" required>

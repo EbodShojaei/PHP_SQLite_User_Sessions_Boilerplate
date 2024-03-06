@@ -8,6 +8,7 @@ class Transaction
     public $expense;
     public $deposit;
     public $balance;
+    public $last_updated;
 
     public function __construct($userId, $date, $name, $expense, $deposit)
     {
@@ -16,6 +17,7 @@ class Transaction
         $this->name = $name;
         $this->expense = $expense;
         $this->deposit = $deposit;
+        $this->balance = $deposit - $expense;
     }
 
     public function getDate()
@@ -36,5 +38,21 @@ class Transaction
     public function getDeposit()
     {
         return $this->deposit;
+    }
+
+    public function getBalance()
+    {
+        return $this->balance;
+    }
+
+    public function getTransaction() {
+        return [
+            'user_id' => $this->userId,
+            'date' => $this->date,
+            'name' => $this->name,
+            'expense' => $this->expense,
+            'deposit' => $this->deposit,
+            'balance' => $this->balance,
+        ];
     }
 }
