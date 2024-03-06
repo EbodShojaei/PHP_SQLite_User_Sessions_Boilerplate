@@ -1,19 +1,19 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/sanitizers.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/controllers/UserController.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/validators.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Sanitizer.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Validator.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $email = sanitizeEmail($_POST['email'] ?? '');
-        $nickname = sanitizeString($_POST['nickname'] ?? '');
-        $password = sanitizeString($_POST['password'] ?? '');
+        $email = Sanitizer::sanitizeEmail($_POST['email'] ?? '');
+        $nickname = Sanitizer::sanitizeString($_POST['nickname'] ?? '');
+        $password = Sanitizer::sanitizeString($_POST['password'] ?? '');
 
-        validateEmail($email);
-        validateNickname($nickname);
-        validatePassword($password);
+        Validator::validateEmail($email);
+        Validator::validateNickname($nickname);
+        Validator::validatePassword($password);
 
         $db = Database::getInstance();
         $userController = new UserController($db);
