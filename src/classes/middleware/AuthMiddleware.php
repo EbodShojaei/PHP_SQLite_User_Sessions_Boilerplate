@@ -9,7 +9,13 @@ class AuthMiddleware
         $this->tokenManager = $tokenManager;
     }
 
-    public function checkAuthenticated()
+    private function redirect($location)
+    {
+        header("Location: $location");
+        exit();
+    }
+
+    private function hasToken()
     {
         if (Cookie::exists('auth_token')) {
             $token = Cookie::get('auth_token');
@@ -21,21 +27,27 @@ class AuthMiddleware
         return null;
     }
 
-    public function checkAuthorized()
-    {
-        $token = $this->checkAuthenticated();
-        $userRole = $this->tokenManager->getUserRoleFromToken($token);
-        if ($userRole !== 'admin') {
-            header('Location: /error/404');
-            exit();
+    public function isAuthenticated() {
+        $token = $this->hasToken();
+        if ($token) {
+            $status = $this->tokenManager->getUserStatusFromToken($token);
+            if ($status === 'active') return true;
         }
+        return false;
     }
 
-    public function checkStatus()
+    public function checkAuthorized()
     {
-        $token = $this->checkAuthenticated();
+        $token = $this->hasToken() ?? $this->redirect('/error/404');
+        $userRole = $this->tokenManager->getUserRoleFromToken($token);
+        if ($userRole !== 'admin') $this->redirect('/error/404');
+    }
+
+    public function checkAuthenticated()
+    {
+        $token = $this->hasToken();
         $userStatus = $this->tokenManager->getUserStatusFromToken($token);
-        if ($userStatus === 'active') {
+        if ($token && $userStatus === 'active') {
             header('Location: /');
             exit();
         }

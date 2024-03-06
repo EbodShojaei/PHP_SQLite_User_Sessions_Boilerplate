@@ -1,6 +1,3 @@
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/views/common/header.php'; ?>
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/views/common/nav.php'; ?>
-
 <main class="container vh-100">
     <div class="hero-section">
         <div class="mt-5">
@@ -11,5 +8,3 @@
         </div>
     </div>
 </main>
-
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/views/common/footer.php'; ?>

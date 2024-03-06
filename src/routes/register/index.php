@@ -1,18 +1,10 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/config/Database.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/auth/TokenManager.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/middleware/AuthMiddleware.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sql/constants/users.php';
-
-$db = Database::getInstance();
-$tokenManager = new TokenManager($db);
-$authMiddleware = new AuthMiddleware($tokenManager);
-
-$authMiddleware->checkStatus();
-
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/views/common/header.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/views/common/nav.php';
     Alerts::display();
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/views/register.php';
+    require_once '_register.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/views/common/footer.php';
 }

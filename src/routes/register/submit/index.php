@@ -7,13 +7,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $email = sanitizeEmail($_POST['email'] ?? '', "/register");
-        $nickname = sanitizeString($_POST['nickname'] ?? '', "/register");
-        $password = sanitizeString($_POST['password'] ?? '', "/register");
+        $email = sanitizeEmail($_POST['email'] ?? '');
+        $nickname = sanitizeString($_POST['nickname'] ?? '');
+        $password = sanitizeString($_POST['password'] ?? '');
 
-        validateEmail($email, "/register");
-        validateNickname($nickname, "/register");
-        validatePassword($password, "/register");
+        validateEmail($email);
+        validateNickname($nickname);
+        validatePassword($password);
 
         $db = Database::getInstance();
         $userController = new UserController($db);
