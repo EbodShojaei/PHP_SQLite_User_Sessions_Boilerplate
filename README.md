@@ -8,7 +8,7 @@ Inspired by last year's web series on session management with Node.js and MongoD
 <br>
 
 	 Author: Ebod Shojaei
-	 Version: 0.5.0
+	 Version: 1.0.0
 
 
 ## Features:
