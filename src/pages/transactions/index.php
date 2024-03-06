@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // get all transactions
     $db = Database::getInstance();
     $transactionController = new TransactionController($db);
-    $transactions = $transactionController->readAll();
+    $transactions = $transactionController->getTransactions();
 
 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';

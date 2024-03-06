@@ -38,7 +38,7 @@ class AuthMiddleware
 
     public function checkAuthorized()
     {
-        $token = $this->hasToken() ?? $this->redirect('/error/404');
+        $token = $this->hasToken();
         $userRole = $this->tokenManager->getUserRoleFromToken($token);
         if ($userRole !== 'admin') $this->redirect('/error/404');
     }

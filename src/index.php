@@ -12,6 +12,7 @@ $tokenManager = new TokenManager($db);
 $authMiddleware = new AuthMiddleware($tokenManager);
 
 $request = $_SERVER['REQUEST_URI'];
+if ($request !== '/') $request = rtrim($request, '/'); // Remove trailing slash
 
 switch ($request) {
     case '/login':
@@ -37,6 +38,34 @@ switch ($request) {
         $isAuthenticated = $authMiddleware->isAuthenticated();
         require 'pages/home/index.php';
         break;
+    case '/transactions':
+        $authMiddleware->checkUnauthenticated();
+        require 'pages/transactions/index.php';
+        break;
+    case '/transactions/create':
+        $authMiddleware->checkUnauthenticated();
+        require 'pages/transactions/create/index.php';
+        break;
+    case '/transactions/create/submit':
+        $authMiddleware->checkUnauthenticated();
+        require 'pages/transactions/create/submit/index.php';
+        break;
+    case '/transactions/update':
+        $authMiddleware->checkUnauthenticated();
+        require 'pages/transactions/update/index.php';
+        break;
+    case '/transactions/update/submit':
+        $authMiddleware->checkUnauthenticated();
+        require 'pages/transactions/update/submit/index.php';
+        break;
+    case '/transactions/delete':
+        $authMiddleware->checkUnauthenticated();
+        require 'pages/transactions/delete/index.php';
+        break;
+    case '/transactions/delete/submit':
+        $authMiddleware->checkUnauthenticated();
+        require 'pages/transactions/delete/submit/index.php';
+        break;
     case '/admin':
         $authMiddleware->checkAuthorized();
         require 'pages/admin/index.php';
@@ -48,10 +77,6 @@ switch ($request) {
     case '/admin/deactivate':
         $authMiddleware->checkAuthorized();
         require 'pages/admin/deactivate/index.php';
-        break;
-    case '/transactions':
-        $authMiddleware->checkUnauthenticated();
-        require 'pages/transactions/index.php';
         break;
     default:
         require 'pages/error/404/index.php';

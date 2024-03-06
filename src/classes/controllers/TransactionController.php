@@ -55,17 +55,45 @@ class TransactionController implements CRUD
         return $this->db->execute($sql, $params);
     }
 
-    public function readAll()
+    public function getTransactions()
     {
-        $sql = "SELECT * FROM transactions WHERE user_id = :user_id";
+        $sql = "SELECT t.*, b.category
+                FROM transactions t
+                LEFT JOIN buckets b ON t.name LIKE '%' || b.transaction_name || '%'
+                WHERE t.user_id = :user_id";
         $params = ['user_id' => $this->userId];
         return $this->db->query($sql, $params);
     }
 
-    public function readAllByBucket($bucket_id)
+    public function getLatestBalance()
     {
-        $sql = "SELECT * FROM transactions WHERE user_id = :user_id AND bucket_id = :bucket_id";
-        $params = ['user_id' => $this->userId, 'bucket_id' => $bucket_id];
-        return $this->db->query($sql, $params);
+        $sql = "SELECT overall_balance 
+                FROM transactions 
+                WHERE user_id = :user_id 
+                ORDER BY transaction_date DESC, transaction_id DESC LIMIT 1";
+        $params = ['user_id' => $this->userId];
+        $result = $this->db->query($sql, $params);
+        return $result ? $result[0]['overall_balance'] : 0;
+    }
+
+    public function getTransactionById($id)
+    {
+        $sql = "SELECT * 
+                FROM transactions 
+                WHERE transaction_id = :id AND user_id = :user_id";
+        $params = ['id' => $id, 'user_id' => $this->userId];
+        $result = $this->db->query($sql, $params);
+        return $result ? $result[0] : null;
+    }
+
+    public function getLastBalanceBefore($date)
+    {
+        $sql = "SELECT overall_balance 
+                FROM transactions 
+                WHERE transaction_date < :date AND user_id = :user_id 
+                ORDER BY transaction_date DESC LIMIT 1";
+        $params = ['date' => $date, 'user_id' => $this->userId];
+        $result = $this->db->query($sql, $params);
+        return $result ? $result[0]['overall_balance'] : 0;
     }
 }
