@@ -1,6 +1,3 @@
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php'; ?>
-<?php Alerts::display(); ?>
-
 <main>
     <div class="container my-5">
         <h1 class="my-5">Admin</h1>

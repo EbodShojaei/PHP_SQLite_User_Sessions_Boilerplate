@@ -1,11 +1,6 @@
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/views/common/header.php'; ?>
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/views/common/nav.php'; ?>
+<?php
 
-<main class="container vh-100">
-    <div class="w-50 mx-auto my-5 text-center">
-        <h1>404</h1>
-        <p>Page not found</p>
-    </div>
-</main>
-
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/views/common/footer.php'; ?>
+require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/_common/_header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/_common/_nav.php';
+require_once '_404.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/_common/_footer.php';
