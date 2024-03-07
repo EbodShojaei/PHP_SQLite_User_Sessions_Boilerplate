@@ -3,6 +3,8 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/controllers/CRUD.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/models/Transaction.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/config/Database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/auth/TokenManager.php';
 
 class TransactionController implements CRUD
 {
@@ -40,23 +42,21 @@ class TransactionController implements CRUD
     public function update($transaction)
     {
         // Check if transaction exists
-        $existingTransaction = $this->getTransactionById($transaction['id']);
+        $existingTransaction = $this->getTransactionById($transaction['trans_id']);
         if (!$existingTransaction) {
             Alerts::redirect("Transaction not found.", "danger", "/transactions");
         }    
 
         if (empty($transaction['expense']) && empty($transaction['deposit'])) {
-            Alerts::redirect("Either expense or deposit must be provided.", "danger", "/transactions/update/" . $transaction['trans_id']);
+            Alerts::redirect("Either expense or deposit must be provided.", "danger", "/transactions/update?id=" . $transaction["trans_id"]);
         }
 
         $expense = empty($transaction['expense']) ? 0 : floatval($transaction['expense']);
         $deposit = empty($transaction['deposit']) ? 0 : floatval($transaction['deposit']);
 
-        if ($expense > 0 && $deposit > 0) {
-            Alerts::redirect("Only either the expense or deposit should be entered, not both.", "danger", "/transactions/update/" . $transaction['trans_id']);
-        }
-
-        $transaction = $transaction->getTransaction();
+        // if ($expense > 0 && $deposit > 0) {
+        //     Alerts::redirect("Only either the expense or deposit should be entered, not both.", "danger", "/transactions/update?id=" . $transaction['trans_id']);
+        // }
         $sql = "UPDATE transactions SET name = :name, expense = :expense, deposit = :deposit, balance = :balance, last_updated = :last_updated WHERE trans_id = :trans_id AND user_id = :user_id";
         $params = [
             'trans_id' => $transaction['trans_id'],
@@ -69,7 +69,7 @@ class TransactionController implements CRUD
         ];
 
         if (!$this->db->execute($sql, $params)) {
-            Alerts::redirect("Error updating transaction.", "danger", "/transactions/update/" . $transaction['trans_id']);
+            Alerts::redirect("Error updating transaction.", "danger", "/transactions/update?id=" . $transaction['trans_id']);
         }
 
         $this->updateBalancesAfterDate($transaction['date']);
@@ -92,10 +92,10 @@ class TransactionController implements CRUD
         return $this->db->query($sql, $params);
     }
 
-    public function getTransactionById($trans_id)
+    public function getTransactionById($transId)
     {
         $sql = "SELECT * FROM transactions WHERE trans_id = :trans_id AND user_id = :user_id";
-        $params = ['trans_id' => $trans_id, 'user_id' => $this->userId];
+        $params = ['trans_id' => $transId, 'user_id' => $this->userId];
         return $this->db->query($sql, $params)[0] ?? null;
     }
 

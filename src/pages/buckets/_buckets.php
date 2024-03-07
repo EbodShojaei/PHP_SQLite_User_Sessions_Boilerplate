@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-        <?php if (is_array($buckets) || is_object($buckets)) ?>
+            <?php if (is_array($buckets) || is_object($buckets)) ?>
             <?php foreach ($buckets as $bucket): ?>
                 <tr>
                     <td>
@@ -27,11 +27,7 @@
                     </td>
                     <td>
                         <button class="btn btn-info"
-                            onclick="document.getElementById('updateForm_<?= $bucket['bucket_id'] ?>').submit();">Update</button>
-                        <form id="updateForm_<?= $bucket['bucket_id'] ?>"
-                            action="/buckets/update?id=<?= $bucket['bucket_id'] ?>" method="post" style="display:none;">
-                            <input type="hidden" name="bucket_id" value="<?= $bucket['bucket_id'] ?>">
-                        </form>
+                            onclick="location.href='/buckets/update?id=<?= $bucket['bucket_id'] ?>'">Update</button>
                         <button class="btn btn-danger"
                             onclick="confirmDelete('<?= $bucket['bucket_id'] ?>')">Delete</button>
                         <form id="deleteForm_<?= $bucket['bucket_id'] ?>" action="/buckets/remove" method="post"

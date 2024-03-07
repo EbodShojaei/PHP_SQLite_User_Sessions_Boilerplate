@@ -31,6 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $transactionController->update($transactionData);
         Alerts::redirect("Transaction updated successfully.", "success", "/transactions");
     } catch (Exception $e) {
-        Alerts::redirect($e->getMessage(), "danger", "/transactions/update/" . $transactionId);
+        Alerts::redirect($e->getMessage(), "danger", "/transactions/update/");
     }
 }
