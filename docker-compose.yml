@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  crudstud:
+    image: eshojaei/makebank:latest
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    ports:
+      - "8888:80"
+    container_name: makebank

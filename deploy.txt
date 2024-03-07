@@ -1,0 +1,5 @@
+docker stop makebank 2>nul || true
+docker rm makebank 2>nul || true
+docker build -t eshojaei/makebank .
+docker push eshojaei/makebank
+docker run -d -p 8888:80 --name makebank eshojaei/makebank:latest
