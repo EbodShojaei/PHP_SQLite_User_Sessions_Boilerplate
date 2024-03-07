@@ -44,10 +44,12 @@
                         <button class="btn btn-info"
                             onclick="document.getElementById('updateForm_<?= $transaction['trans_id'] ?>').submit();">Update</button>
                         <form id="updateForm_<?= $transaction['trans_id'] ?>"
-                            action="/transactions/update?id=<?= $transaction['trans_id'] ?>" method="post" style="display:none;">
+                            action="/transactions/update?id=<?= $transaction['trans_id'] ?>" method="post"
+                            style="display:none;">
                             <input type="hidden" name="trans_id" value="<?= $transaction['trans_id'] ?>">
                         </form>
-                        <button class="btn btn-danger" onclick="confirmDelete('<?= $transaction['trans_id'] ?>')">Delete</button>
+                        <button class="btn btn-danger"
+                            onclick="confirmDelete('<?= $transaction['trans_id'] ?>')">Delete</button>
                         <form id="deleteForm_<?= $transaction['trans_id'] ?>" action="/transactions/remove" method="post"
                             style="display:none;">
                             <input type="hidden" name="trans_id" value="<?= $transaction['trans_id'] ?>">
