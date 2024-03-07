@@ -100,6 +100,10 @@ if (strpos($request, '/transactions/update') === 0) {
             $authMiddleware->checkUnauthenticated();
             require 'pages/buckets/update/submit/index.php';
             break;
+        case '/dashboard':
+            $authMiddleware->checkUnauthenticated();
+            require 'pages/dashboard/index.php';
+            break;
         case '/admin':
             $authMiddleware->checkAuthorized();
             require 'pages/admin/index.php';

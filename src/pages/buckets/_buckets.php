@@ -6,7 +6,7 @@
     <table class="table">
         <thead class="thead-dark">
             <tr>
-                <th>Bucket ID</th>
+                <th>ID</th>
                 <th>Transaction Name</th>
                 <th>Category</th>
                 <th>Actions</th>
