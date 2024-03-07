@@ -55,4 +55,14 @@ class Transaction
             'balance' => $this->balance,
         ];
     }
+
+    public function __constructFromArray($array)
+    {
+        $this->userId = $array['user_id'] ?? null;
+        $this->date = $array['date'] ?? null;
+        $this->name = $array['name'] ?? null;
+        $this->expense = $array['expense'] ?? null;
+        $this->deposit = $array['deposit'] ?? null;
+        $this->balance = $array['balance'] ?? null;
+    }
 }

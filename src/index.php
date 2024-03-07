@@ -14,7 +14,14 @@ $authMiddleware = new AuthMiddleware($tokenManager);
 $request = $_SERVER['REQUEST_URI'];
 if ($request !== '/') $request = rtrim($request, '/'); // Remove trailing slash
 
-switch ($request) {
+if (strpos($request, '/transactions/update') === 0) {
+    $authMiddleware->checkUnauthenticated();
+    require 'pages/transactions/update/index.php';
+} elseif (strpos($request, '/transactions/update/submit') === 0) {
+    $authMiddleware->checkUnauthenticated();
+    require 'pages/transactions/update/submit/index.php';
+} else {
+    switch ($request) {
     case '/login':
         $authMiddleware->checkAuthenticated();
         require 'pages/login/index.php';
@@ -62,6 +69,14 @@ switch ($request) {
         $authMiddleware->checkUnauthenticated();
         require 'pages/transactions/remove/index.php';
         break;
+    case '/buckets':
+        $authMiddleware->checkUnauthenticated();
+        require 'pages/buckets/index.php';
+        break;
+    case '/buckets/create':
+        $authMiddleware->checkUnauthenticated();
+        require 'pages/buckets/create/index.php';
+        break;
     case '/admin':
         $authMiddleware->checkAuthorized();
         require 'pages/admin/index.php';
@@ -77,4 +92,5 @@ switch ($request) {
     default:
         require 'pages/error/404/index.php';
         break;
+    }
 }

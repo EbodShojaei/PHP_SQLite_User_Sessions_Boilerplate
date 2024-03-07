@@ -30,30 +30,36 @@ class TransactionController implements CRUD
         return $this->db->execute($sql, $params);
     }
 
-    public function read($id)
+    public function read($trans_id)
     {
-        $sql = "SELECT * FROM transactions WHERE id = :id";
-        $params = ['id' => $id];
+        $sql = "SELECT * FROM transactions WHERE trans_id = :trans_id";
+        $params = ['trans_id' => $trans_id];
         return $this->db->query($sql, $params);
     }
 
     public function update($transaction)
     {
+        // Check if transaction exists
+        $existingTransaction = $this->getTransactionById($transaction['id']);
+        if (!$existingTransaction) {
+            Alerts::redirect("Transaction not found.", "danger", "/transactions");
+        }    
+
         if (empty($transaction['expense']) && empty($transaction['deposit'])) {
-            Alerts::redirect("Either expense or deposit must be provided.", "danger", "/transactions/update/" . $transaction['id']);
+            Alerts::redirect("Either expense or deposit must be provided.", "danger", "/transactions/update/" . $transaction['trans_id']);
         }
 
         $expense = empty($transaction['expense']) ? 0 : floatval($transaction['expense']);
         $deposit = empty($transaction['deposit']) ? 0 : floatval($transaction['deposit']);
 
         if ($expense > 0 && $deposit > 0) {
-            Alerts::redirect("Only either the expense or deposit should be entered, not both.", "danger", "/transactions/update/" . $transaction['id']);
+            Alerts::redirect("Only either the expense or deposit should be entered, not both.", "danger", "/transactions/update/" . $transaction['trans_id']);
         }
 
         $transaction = $transaction->getTransaction();
-        $sql = "UPDATE transactions SET name = :name, expense = :expense, deposit = :deposit, balance = :balance, last_updated = :last_updated WHERE id = :id AND user_id = :user_id";
+        $sql = "UPDATE transactions SET name = :name, expense = :expense, deposit = :deposit, balance = :balance, last_updated = :last_updated WHERE trans_id = :trans_id AND user_id = :user_id";
         $params = [
-            'id' => $transaction['id'],
+            'trans_id' => $transaction['trans_id'],
             'user_id' => $this->userId,
             'name' => $transaction['name'],
             'expense' => $transaction['expense'],
@@ -63,17 +69,17 @@ class TransactionController implements CRUD
         ];
 
         if (!$this->db->execute($sql, $params)) {
-            Alerts::redirect("Error updating transaction.", "danger", "/transactions/update/" . $transaction['id']);
+            Alerts::redirect("Error updating transaction.", "danger", "/transactions/update/" . $transaction['trans_id']);
         }
 
         $this->updateBalancesAfterDate($transaction['date']);
     }
 
-    public function delete($id)
+    public function delete($trans_id)
     {
-        $sql = "DELETE FROM transactions WHERE id = :id AND user_id = :user_id";
+        $sql = "DELETE FROM transactions WHERE trans_id = :trans_id AND user_id = :user_id";
         $params = [
-            'id' => $id,
+            'trans_id' => $trans_id,
             'user_id' => $this->userId,
         ];
         return $this->db->execute($sql, $params);
@@ -86,10 +92,10 @@ class TransactionController implements CRUD
         return $this->db->query($sql, $params);
     }
 
-    public function getTransactionById($id)
+    public function getTransactionById($trans_id)
     {
-        $sql = "SELECT * FROM transactions WHERE id = :id AND user_id = :user_id";
-        $params = ['id' => $id, 'user_id' => $this->userId];
+        $sql = "SELECT * FROM transactions WHERE trans_id = :trans_id AND user_id = :user_id";
+        $params = ['trans_id' => $trans_id, 'user_id' => $this->userId];
         return $this->db->query($sql, $params)[0] ?? null;
     }
 
@@ -103,14 +109,14 @@ class TransactionController implements CRUD
 
         foreach ($transactions as $transaction) {
             $balance += $transaction['deposit'] - $transaction['expense'];
-            $this->updateBalanceForTransaction($transaction['id'], $balance);
+            $this->updateBalanceForTransaction($transaction['trans_id'], $balance);
         }
     }
 
-    private function updateBalanceForTransaction($id, $balance)
+    private function updateBalanceForTransaction($trans_id, $balance)
     {
-        $sql = "UPDATE transactions SET balance = :balance WHERE id = :id AND user_id = :user_id";
-        $params = ['balance' => $balance, 'id' => $id, 'user_id' => $this->userId];
+        $sql = "UPDATE transactions SET balance = :balance WHERE trans_id = :trans_id AND user_id = :user_id";
+        $params = ['balance' => $balance, 'trans_id' => $trans_id, 'user_id' => $this->userId];
         $this->db->execute($sql, $params);
     }
 

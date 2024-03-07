@@ -3,7 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sql/constants/transactions.php';
 
 const TRANSACTIONS_TABLE = "
 CREATE TABLE IF NOT EXISTS transactions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    trans_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     bucket_id INTEGER,
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

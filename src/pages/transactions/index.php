@@ -9,7 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $transactionController = new TransactionController($db);
     $transactions = $transactionController->getTransactions();
 
-
     require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/helpers/Alerts.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/_common/_header.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/_common/_nav.php';
